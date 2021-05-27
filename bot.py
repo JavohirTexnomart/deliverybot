@@ -19,9 +19,6 @@ def hello():
         myobj = json.dumps(str(r))
         weburl = requests.post(URL,data = myobj)
         return jsonify(r)
-    else:
-        r = request.get_json()
-        bot.send_message('500324557', 'text:\n' + str(r))
     return '<a href=\'login/\'>/login/</a><br> <a href=\'auth/\'>/auth/</a><br><a href=\'users/\'>/users/</a><br>'
 
 if __name__ == 'main':
