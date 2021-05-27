@@ -13,4 +13,5 @@ def getHelloWorld():
   
 if __name__ == 'main':
     # Bind to PORT if defined, otherwise default to 5000.
-    app.run(threaded=True, port=3001)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', threaded=True, port=port)
