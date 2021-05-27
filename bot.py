@@ -8,6 +8,7 @@ URL = 'http://vpn.texnomart.uz:8282/javoxir_ut_trendy/hs/deliverywebhook/e382d9e
 TOKEN = '1886558847:AAHJEcszrZFebZUxbwLTK1X67ZKCNLmYyLM'
 
 app = Flask(__name__)
+sslify = SSLify(app)
 secret = "e382d9ee722840d6a53e02d299331f4f"
 bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
