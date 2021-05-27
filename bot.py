@@ -7,7 +7,7 @@ import telebot
 import datetime
 
 URL = 'http://vpn.texnomart.uz:8282/javoxir_ut_trendy/hs/deliverywebhook/e382d9ee722840d6a53e02d299331f4f'
-TOKEN = '971974636:AAF8VMmiIiJNGje_w61IU-ebyynuk9gBtTY'
+TOKEN = '1886558847:AAHJEcszrZFebZUxbwLTK1X67ZKCNLmYyLM'
 
 app = Flask(name)
 bot = telebot.TeleBot(TOKEN)
