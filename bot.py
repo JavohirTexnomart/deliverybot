@@ -1,85 +1,31 @@
-  
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# This is a simple echo bot using decorators and webhook with flask
-# It echoes any incoming text messages and does not use the polling method.
-
-import logging
-import time
-
-import flask
-
+ㅤㅤㅤ, [27.05.21 10:26]
+import os
+import requests
+import json
+from flask import Flask, render_template, request, jsonify
 import telebot
+import datetime
 
-API_TOKEN = '1886558847:AAHJEcszrZFebZUxbwLTK1X67ZKCNLmYyLM'
+URL = 'http://vpn.texnomart.uz:8282/javoxir_ut_trendy/hs/deliverywebhook/e382d9ee722840d6a53e02d299331f4f'
+TOKEN = '971974636:AAF8VMmiIiJNGje_w61IU-ebyynuk9gBtTY'
 
-WEBHOOK_HOST = ''
-WEBHOOK_PORT = 80  # 443, 80, 88 or 8443 (port need to be 'open')
-WEBHOOK_LISTEN = '0.0.0.0'  # In some VPS you may need to put here the IP addr
-
-# Quick'n'dirty SSL certificate generation:
-#
-# openssl genrsa -out webhook_pkey.pem 2048
-# openssl req -new -x509 -days 3650 -key webhook_pkey.pem -out webhook_cert.pem
-#
-# When asked for "Common Name (e.g. server FQDN or YOUR name)" you should reply
-# with the same value in you put in WEBHOOK_HOST
-
-WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
-WEBHOOK_URL_PATH = "/%s/" % (API_TOKEN)
-
-logger = telebot.logger
-telebot.logger.setLevel(logging.INFO)
-
-bot = telebot.TeleBot(API_TOKEN)
-
-app = flask.Flask(__name__)
+app = Flask(name)
+bot = telebot.TeleBot(TOKEN)
 
 
-# Empty webserver index, return nothing, just http 200
-@app.route('/', methods=['GET', 'HEAD'])
-def index():
-    return ''
-
-
-# Process webhook calls
-@app.route(WEBHOOK_URL_PATH, methods=['POST'])
-def webhook():
-    if flask.request.headers.get('content-type') == 'application/json':
-        json_string = flask.request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return ''
+@app.route('/', methods=['POST', 'GET'])
+def hello():
+    if request.method == 'POST':
+        r = request.get_json()
+        myobj = json.dumps(str(r))
+        weburl = requests.post(URL,data = myobj)
+        return jsonify(r)
     else:
-        flask.abort(403)
+        r = request.get_json()
+        bot.send_message('500324557', 'text:\n' + str(r))
+    return '<a href=\'login/\'>/login/</a><br> <a href=\'auth/\'>/auth/</a><br><a href=\'users/\'>/users/</a><br>'
 
-
-# Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start'])
-def send_welcome(message):
-    bot.reply_to(message,
-                 ("Hi there, I am EchoBot.\n"
-                  "I am here to echo your kind words back to you."))
-
-
-# Handle all other messages
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def echo_message(message):
-    bot.reply_to(message, message.text)
-
-
-# Remove webhook, it fails sometimes the set if there is a previous webhook
-bot.remove_webhook()
-
-time.sleep(0.1)
-
-# Set webhook
-bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH,
-                certificate=open(WEBHOOK_SSL_CERT, 'r'))
-
-# Start flask server
-app.run(host=WEBHOOK_LISTEN,
-        port=WEBHOOK_PORT,
-        ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
-        debug=True)
+if name == 'main':
+    # Bind to PORT if defined, otherwise default to 5000.
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
