@@ -24,7 +24,7 @@ def hello():
         bot.send_message('500324557', 'text:\n' + str(r))
     return '<a href=\'login/\'>/login/</a><br> <a href=\'auth/\'>/auth/</a><br><a href=\'users/\'>/users/</a><br>'
 
-if name == 'main':
+if __name__ == 'main':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
