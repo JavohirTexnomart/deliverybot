@@ -1,4 +1,3 @@
-ㅤㅤㅤ, [27.05.21 10:26]
 import os
 import requests
 import json
