@@ -11,7 +11,7 @@ app = Flask(__name__)
 secret = "e382d9ee722840d6a53e02d299331f4f"
 bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
-bot.set_webhook(url="https://https://deliverytelegrambot.herokuapp.com/{}".format(secret))
+bot.set_webhook(url="https://deliverytelegrambot.herokuapp.com/{}".format(secret))
 
 @app.route('/{}'.format(secret), methods=["POST"])
 def hello():
